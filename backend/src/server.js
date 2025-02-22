@@ -2,7 +2,9 @@ require('dotenv').config()
 const express = require('express');
 const server = express();
 const pool = require('./config/db');
+const authRoutes = require('./routes/auth');
 
+server.use(express.json());
 
 server.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>');
@@ -16,6 +18,8 @@ server.get('/testdb', async (req, res) => {
         res.status(500).send(err.message);
     }
 });
+
+server.use('/auth', authRoutes);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
