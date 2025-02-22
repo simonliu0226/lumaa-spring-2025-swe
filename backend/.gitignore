@@ -1,8 +1,8 @@
 # Node Modules
 node_modules/
 
-# Environment Variables
-.env
+# Environment Variables - Normally be ignored
+#.env
 
 # Logs
 *.log
