@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { IoIosCheckmarkCircle, IoIosCheckmarkCircleOutline } from "react-icons/io";
+import styles from './Task.module.css';
 
 interface TaskProps {
     id: number;
@@ -38,8 +39,8 @@ const Task: React.FC<TaskProps> = ({ id, title, description, isComplete, onEdit,
     }
 
     return (
-        <div>
-            {complete ? <button onClick={handleToggle}><IoIosCheckmarkCircle/></button> : <button onClick={handleToggle}><IoIosCheckmarkCircleOutline/></button>}
+        <div className={styles.container}>
+            {complete ? <button className={styles.button} onClick={handleToggle}><IoIosCheckmarkCircle size={40}/></button> : <button className={styles.button} onClick={handleToggle}><IoIosCheckmarkCircleOutline size={40}/></button>}
             {editMode ? (
                 <>
                     <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
@@ -51,8 +52,8 @@ const Task: React.FC<TaskProps> = ({ id, title, description, isComplete, onEdit,
                     <p>{currDescription}</p>
                 </>
             )}
-            {editMode ? <button onClick={() => setEditMode(false)}>Cancel</button> : <button onClick={handleEditMode}>Edit</button>}
-            {editMode ? <button onClick={handleSave}>Save</button> : <button onClick={() => onDelete(id)}>Delete</button>}
+            {editMode ? <button className={styles.button} onClick={() => setEditMode(false)}>Cancel</button> : <button className={styles.button} onClick={handleEditMode}>Edit</button>}
+            {editMode ? <button className={styles.button} onClick={handleSave}>Save</button> : <button className={styles.button} onClick={() => onDelete(id)}>Delete</button>}
         </div>
     );
 };

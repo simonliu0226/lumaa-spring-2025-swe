@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Task from '../components/Task';
+import Task from '../../components/Task/Task';
+import styles from './Tasks.module.css';
 
 interface Task {
     id: number;
@@ -89,13 +90,13 @@ const Tasks: React.FC = () => {
 
 
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Tasks</h1>
-            <div>
+            <div className={styles.createTaskContainer}>
                 <input type="text" placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
                 <textarea placeholder="Description" value={newDescription} onChange={e => setNewDescription(e.target.value)} />
+                <button onClick={handleCreateTask}>Create Task</button>
             </div>
-            <button onClick={handleCreateTask}>Create Task</button>
             {tasks.map((task: any) => (
                 <Task
                     key={task.id}
