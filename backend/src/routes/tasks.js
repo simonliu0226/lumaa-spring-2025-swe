@@ -31,7 +31,6 @@ router.post('/', authenticateToken, async (req, res) => {
 router.put('/:id', authenticateToken, async (req, res) => {
     const { id } = req.params;
     const { title, description, isComplete } = req.body;
-    console.log(isComplete)
     try {
         const result = await pool.query(
             'UPDATE tasks SET title = $1, description = $2, isComplete = $3 WHERE id = $4 AND userId = $5 RETURNING *',

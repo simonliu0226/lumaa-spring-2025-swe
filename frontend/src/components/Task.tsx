@@ -6,12 +6,11 @@ interface TaskProps {
     title: string;
     description: string;
     isComplete: boolean;
-    onEdit: (id: number, newTitle: string, newDescription: string) => void;
+    onEdit: (id: number, newTitle: string, newDescription: string, newCompleteStatus: boolean) => void;
     onDelete: (id: number) => void;
-    onToggleComplete: (id: number) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ id, title, description, isComplete, onEdit, onDelete, onToggleComplete }) => {
+const Task: React.FC<TaskProps> = ({ id, title, description, isComplete, onEdit, onDelete }) => {
     const [editMode, setEditMode] = useState(false);
     const [currTitle, setCurrTitle] = useState(title);
     const [currDescription, setCurrDescription] = useState(description);
@@ -22,13 +21,13 @@ const Task: React.FC<TaskProps> = ({ id, title, description, isComplete, onEdit,
     const handleToggle = () => {
         const newCompleteStatus = !complete;
         setComplete(newCompleteStatus);
-        onToggleComplete(id);
+        onEdit(id, currTitle, currDescription, newCompleteStatus);
     }
 
     const handleSave = () => {
         setCurrTitle(newTitle);
         setCurrDescription(newDescription);
-        onEdit(id, newTitle, newDescription);
+        onEdit(id, newTitle, newDescription, complete);
         setEditMode(false);
     }
 

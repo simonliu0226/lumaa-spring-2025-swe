@@ -2,8 +2,17 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Task from '../components/Task';
 
+interface Task {
+    id: number;
+    title: string;
+    description: string;
+    iscomplete: boolean;
+}
+
 const Tasks: React.FC = () => {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const [newTitle, setNewTitle] = useState('');
+    const [newDescription, setNewDescription] = useState('');
 
     useEffect(() => {
         const getTasks = async () => {
@@ -23,10 +32,70 @@ const Tasks: React.FC = () => {
         getTasks();
     }, []);
 
+    const handleCreateTask = async () => {
+        if (!newTitle) {
+            alert('Title is required');
+            return;
+        }
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/tasks`, {
+                title: newTitle,
+                description: newDescription
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setTasks([...tasks, response.data]);
+            setNewTitle('');
+            setNewDescription('');
+            console.log(response.data);
+        } catch (err) {
+            alert('Failed to create task');
+        }
+    }
+    
+    const handleDeleteTask = async (id: number) => {
+        try {
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/tasks/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setTasks(tasks.filter(task => task.id!== id));
+            console.log('Deleted task', id);
+        } catch (err) {
+            alert('Failed to delete task');
+        }
+    }
+
+    const handleEditTask = async (id: number, newTitle: string, newDescription: string, newCompleteStatus: boolean) => {
+        try {
+            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/tasks/${id}`, {
+                title: newTitle,
+                description: newDescription,
+                isComplete: newCompleteStatus
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setTasks(tasks.map(task => task.id === id? {...task, title: newTitle, description: newDescription} : task));
+            console.log('Updated task', id);
+        } catch (err) {
+            console.log('Failed to update task');
+        }
+    }
+
 
     return (
         <div>
             <h1>Tasks</h1>
+            <div>
+                <input type="text" placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
+                <textarea placeholder="Description" value={newDescription} onChange={e => setNewDescription(e.target.value)} />
+            </div>
+            <button onClick={handleCreateTask}>Create Task</button>
             {tasks.map((task: any) => (
                 <Task
                     key={task.id}
@@ -34,9 +103,8 @@ const Tasks: React.FC = () => {
                     title={task.title}
                     description={task.description}
                     isComplete={task.iscomplete}
-                    onEdit={(id: number) => console.log('Edit', id)}
-                    onDelete={(id: number) => console.log('Delete', id)}
-                    onToggleComplete={(id: number) => console.log('Toggle', id)}
+                    onEdit={(id: number, newTitle: string, newDescription: string, newCompleteStatus: boolean) => handleEditTask(id, newTitle, newDescription, newCompleteStatus)}
+                    onDelete={(id: number) => handleDeleteTask(id)}
                 />
             ))}
         </div>
