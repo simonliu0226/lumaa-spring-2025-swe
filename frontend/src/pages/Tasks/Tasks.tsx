@@ -88,27 +88,40 @@ const Tasks: React.FC = () => {
         }
     }
 
+    const handleSignOut = () => {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }
+
 
     return (
-        <div className={styles.container}>
-            <h1>Tasks</h1>
-            <div className={styles.createTaskContainer}>
-                <input type="text" placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
-                <textarea placeholder="Description" value={newDescription} onChange={e => setNewDescription(e.target.value)} />
-                <button onClick={handleCreateTask}>Create Task</button>
+        <>
+            <button onClick={handleSignOut}>Sign Out</button>
+            <div className={styles.container}>
+                <h1>Tasks</h1>
+                <div className={styles.createTaskContainer}>
+                    <input type="text" placeholder="Title" value={newTitle} onChange={e => setNewTitle(e.target.value)} />
+                    <textarea placeholder="Description" value={newDescription} onChange={e => setNewDescription(e.target.value)} />
+                    <button onClick={handleCreateTask}>Create Task</button>
+                </div>
+                <div className={styles.titles}>
+                    <h2>Status</h2>
+                    <h2>Title</h2>
+                    <h2>Description</h2>
+                </div>
+                {tasks.map((task: any) => (
+                    <Task
+                        key={task.id}
+                        id={task.id}
+                        title={task.title}
+                        description={task.description}
+                        isComplete={task.iscomplete}
+                        onEdit={(id: number, newTitle: string, newDescription: string, newCompleteStatus: boolean) => handleEditTask(id, newTitle, newDescription, newCompleteStatus)}
+                        onDelete={(id: number) => handleDeleteTask(id)}
+                    />
+                ))}
             </div>
-            {tasks.map((task: any) => (
-                <Task
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    isComplete={task.iscomplete}
-                    onEdit={(id: number, newTitle: string, newDescription: string, newCompleteStatus: boolean) => handleEditTask(id, newTitle, newDescription, newCompleteStatus)}
-                    onDelete={(id: number) => handleDeleteTask(id)}
-                />
-            ))}
-        </div>
+        </>
     )
 }
 
