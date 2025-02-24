@@ -57,5 +57,8 @@ Here's how to use this application:
 - **Registering**: Navigate to /register to register a new account.
 - **Task Management**: Navigate to / to view and update the tasks.
 
+### Video Demonstration:
+- [Video Link](https://youtu.be/cJlb1U8bEPw)
+
 ### Salary Expectations per Month
 I am expecting $6,000 per month.
