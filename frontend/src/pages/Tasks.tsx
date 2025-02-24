@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Task from '../components/Task';
 
 const Tasks: React.FC = () => {
     const [tasks, setTasks] = useState([]);
@@ -25,13 +26,19 @@ const Tasks: React.FC = () => {
 
     return (
         <div>
-            <ul>
-                {tasks.map((task: any) => (
-                    <li key={task.id}>
-                        {task.title} -- {task.description}
-                    </li>
-                ))}
-            </ul>
+            <h1>Tasks</h1>
+            {tasks.map((task: any) => (
+                <Task
+                    key={task.id}
+                    id={task.id}
+                    title={task.title}
+                    description={task.description}
+                    isComplete={task.iscomplete}
+                    onEdit={(id: number) => console.log('Edit', id)}
+                    onDelete={(id: number) => console.log('Delete', id)}
+                    onToggleComplete={(id: number) => console.log('Toggle', id)}
+                />
+            ))}
         </div>
     )
 }
