@@ -96,7 +96,7 @@ const Tasks: React.FC = () => {
 
     return (
         <>
-            <button onClick={handleSignOut}>Sign Out</button>
+            <button onClick={handleSignOut}>Logout</button>
             <div className={styles.container}>
                 <h1>Tasks</h1>
                 <div className={styles.createTaskContainer}>
